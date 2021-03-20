@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <h2>{{ username }}</h2>
+        <form method="post" enctype="multipart/form-data" action="{% url 'addpost' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Add post</button>
+        </form><br>
+        </div>
+    <center>
+        <h3 >My Posts</h3>
+    </center>
+    <hr class="mt-0 mb-4">
+    {% for el in posts %}
+        <div class="alert alert-warning mt-2">
+            <h2>{{ el.header }}</a></h2>
+            {% if el.picture %}
+                <img src="{{ el.picture.url }}" alt="connect" style="max-height:300px"><br>
+            {% endif %}
+            {{ el.text }}<br>
+            {{ el.from_user.username }}<br>
+            <form method="GET" action="{% url 'edit' el.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+            <form method="GET" action="{% url 'delete' el.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

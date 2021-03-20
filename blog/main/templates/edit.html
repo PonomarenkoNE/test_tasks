@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="header">Header: </label><br>
+        <input id="header" type="text" name="header" value="{{ post.header }}"><br><br>
+        <label for="text">Text: </label><br>
+        <textarea id="text" name="text" rows="10" cols="45">{{ post.text }}</textarea><br><br>
+        <label for="picture">Picture: </label><br>
+        <input id="picture" type="file" name="picture"><br><br>
+        <button type="submit" class="btn btn-success">Edit post</button>
+    </form>
+</div>
+
+{% endblock %}

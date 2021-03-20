@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    {% for el in posts %}
+        <div class="alert alert-warning mt-2">
+            <h2>{{ el.header }}</h2>
+            {% if el.picture %}
+                <img src="{{ el.picture.url }}" alt="connect" style="max-height:300px"><br>
+            {% endif %}
+            {{ el.text }}<br>
+            <b>By: {{ el.from_user.username }}<br></b>
+            Comments:<br>
+            {% for i in comments %}
+                {% if i.to_post == el %}
+                    <div class="alert alert-info">
+                        {{ i.text }}<br>
+                        <b>By: {{ i.from_user }}<br></b>
+                    </div>
+                 {% endif %}
+            {% endfor %}
+            <form method="post" enctype="multipart/form-data" action="{% url 'comment' el.id %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-info">Comment</button>
+            </form>
+            {% if request.user.is_superuser %}
+                <form method="GET" action="{% url 'delete' el.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
